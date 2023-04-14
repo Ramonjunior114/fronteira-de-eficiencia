@@ -1,0 +1,23 @@
+#install Finquant
+!pip install -q finquant
+
+#importe as bibliotecas
+from finquant.portfolio import build_portfolio
+import matplotlib.pyplot as plt
+
+#montar a carteira
+lista_acao = ['ABEV3.SA','BBDC4.SA','MGLU3.SA','VALE3.SA','WEGE3.SA','TAEE11.SA']
+pf = build_portfolio(names=lista_acao, data_api='yfinance')
+
+#Selic Atual
+pf.risk_free_rate = 0.1375 
+
+#simulacao de monte carlo. o Padrao é 1000 carteiras aleatoria
+pf.mc_optimisation(50000)  
+
+#plotando o Grafico
+plt.figure(figsize=(18,8))
+pf.mc_plot_results() #Resultado de simulacao monte carlo
+pf.ef_plot_efrontier() #fronteira de eficiencia
+pf.ef.plot_optimal_portfolios() #portifolio otimo
+pf.plot_stocks() #acoes 
